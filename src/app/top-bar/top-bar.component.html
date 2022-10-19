@@ -1,0 +1,42 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
+            data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" 
+            aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <a href="#" class="navbar-brand">
+                <!--img src="../../assets//img/logotipoLosa.svg" alt="LOGO" width="225" height="50"-->
+                Capturador
+            </a>    
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item"><a class="nav-link" routerLink="/">Inicio</a></li>
+                <li class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" role="button" data-toggle="dropdown" data-bs-toggle="dropdown" >Nómina</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#" class="dropdown-item" routerLink="/nomina/altas">Altas</a></li>
+                        <li><a href="#" class="dropdown-item">Bajas</a></li>
+                        <div class="dropdown-divider"></div>
+                        <h2 class="dropdown-header text-center" style="background-color: #e5e5e5;">Cambios</h2>
+                        <li><a href="#" class="dropdown-item">Ingresos eventuales</a></li>
+                        <li><a href="#" class="dropdown-item">Incremento salarial</a></li>
+                        <li><a href="#" class="dropdown-item">Descuentos especiales</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown">Solicitudes</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#" class="dropdown-item" routerLink="/solicitud/solicitud-anticipo">Anticipo</a></li>
+                        <li><a href="#" class="dropdown-item" routerLink="/solicitud/solicitud-vacaciones">Vacaciones</a></li>
+                        <li><a href="#" class="dropdown-item" routerLink="/solicitud/solicitud-certificado">Constancias</a></li>
+                        <li><a href="#" class="dropdown-item">LLamadas de atención</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item"><a href="#" class="nav-link">Reportes</a></li>
+                <li *ngIf="!isUserAuthenticated()" class="nav-item"><a class="nav-link" routerLink="/login">Login</a></li>
+                <li *ngIf="isUserAuthenticated()" class="nav-item"><a class="nav-link" (click)="logOut()">Logout</a></li>
+            </ul>    
+        </div>
+    </div>
+</nav>

@@ -1,0 +1,40 @@
+<div class="col d-flex justify-content-center">
+    <div class="card" style="min-width: 50%; max-width: 85%; margin-top: 25px;">
+        <div class="card-header bg-info">Solicitud de certificado</div>
+        <div class="card-body">
+            <div class="card-body">
+                <form #sCertificadoForm="ngForm" autocomplete="off" novalidate (ngSubmit)="onSubmit(sCertificadoForm)">
+                    <div class="input-group mb-2">
+                        <span class="input-group-text" style="min-width:165px;">Empresa</span>
+                        <select name="companyID" id="companyID" class="form-select" [(ngModel)]="solicitud.companyID" autofocus
+                        #companyID="ngModel" [ngClass]="{ 'is-invalid': companyID.invalid && companyID.touched , 'is-valid': companyID.valid }"
+                        >
+                        <option *ngFor="let companie of companies" [value]="companie.companyID">{{ companie.companyName }}</option>
+                        </select>
+                        <span class="invalid-feedback">Dato requerido</span>
+                    </div>
+                    <div class="input-group mb-2">
+                        <span class="input-group-text" style="min-width:165px;">Código</span>
+                        <input type="text" id="employeeCode" name="employeeCode" [(ngModel)]="solicitud.employeeCode" 
+                        #employeeCode="ngModel" [ngClass]="{ 'is-invalid': employeeCode.invalid && employeeCode.touched , 'is-valid': employeeCode.valid }"
+                        class="form-control" placeholder="Código de empleado" required (blur)="onDataChange()"> 
+                        <span class="invalid-feedback" *ngIf="employeeCode?.invalid && (employeeCode?.dirty || employeeCode?.touched)">Dato requerido</span>
+                    </div>
+                    <h6>{{nombreEmpleado}}</h6>
+                    <div class="input-group mb-2">
+                        <span class="input-group-text" style="min-width:165px;">Tipo certificado</span>
+                        <select name="typeRequest" id="typeRequest" class="form-select" [(ngModel)]="solicitud.typeRequest"
+                        #typeRequest="ngModel" [ngClass]="{ 'is-invalid': typeRequest.invalid && typeRequest.touched , 'is-valid': typeRequest.valid }"
+                        >
+                            <option value="1">Labores</option>
+                            <option value="2">Ingresos</option>
+                            <option value="3">IGSS</option>
+                        </select>
+                        <span class="invalid-feedback">Dato requerido</span>
+                    </div>                    
+                    <button type="submit" class="btn btn-lg btn-primary" [disabled]="!sCertificadoForm.form.valid || !empleadoOK">Solicitar constancia</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,54 @@
+<div class="col d-flex justify-content-center">
+    <div class="card" style="min-width: 50%; max-width: 85%; margin-top: 25px;">
+        <div class="card-header bg-info">
+            Solicitud de vacaciones
+        </div>
+        <div class="card-body">
+            <form #sVacacionesForm="ngForm" autocomplete="off" novalidate (ngSubmit)="onSubmit(sVacacionesForm)">
+                <div class="input-group mb-2">
+                    <span class="input-group-text" style="min-width:125px;">Empresa</span>
+                    <select name="companyID" id="companyID" class="form-select" [(ngModel)]="solicitud.companyID" autofocus
+                    #companyID="ngModel" [ngClass]="{ 'is-invalid': companyID.invalid && companyID.touched , 'is-valid': companyID.valid }"
+                    >
+                    <option [ngValue]="null" disabled>Seleccione la empresa</option>
+                    <option *ngFor="let companie of companies" [value]="companie.companyID">{{ companie.companyName }}</option>
+                    </select>
+                    <span class="invalid-feedback">Dato requerido</span>
+                </div>
+                <div class="input-group mb-2">
+                    <span class="input-group-text" style="min-width:125px;">Código</span>
+                    <input type="text" id="employeeCode" name="employeeCode" [(ngModel)]="solicitud.employeeCode" 
+                    #employeeCode="ngModel" [ngClass]="{ 'is-invalid': employeeCode.invalid && employeeCode.touched , 'is-valid': employeeCode.valid }"
+                    class="form-control" placeholder="Código de empleado" required (blur)="onDataChange()">
+                    <span class="invalid-feedback" *ngIf="employeeCode?.invalid && (employeeCode?.dirty || employeeCode?.touched)">Dato requerido</span>
+                </div>
+                <h6>{{nombreEmpleado}}</h6>
+                <div class="input-group mb-2">
+                    <span class="input-group-text"style="min-width:125px;">Fecha inicio</span>
+                    <input type="date" id="dateStart" name="dateStart" class="form-control" 
+                        min="{{ this.addDays(0) }}" max="{{ this.addDays(90) }}"
+                        #dateStart="ngModel" [ngClass]="{ 'is-invalid': dateStart.invalid && dateStart.touched , 'is-valid': dateStart.valid }"
+                        [(ngModel)]="solicitud.dateStart" required>
+                    <span class="invalid-feedback">Dato requerido</span>
+                </div>
+                <div class="input-group mb-2">
+                    <span class="input-group-text"style="min-width:125px;">Fecha final</span>
+                    <input type="date" id="dateEnd" name="dateEnd" class="form-control" 
+                        min="{{ this.addDays(0) }}" max="{{ this.addDays(90) }}"
+                        #dateEnd="ngModel" [ngClass]="{ 'is-invalid': dateEnd.invalid && dateEnd.touched , 'is-valid': dateEnd.valid }"
+                        [(ngModel)]="solicitud.dateEnd" required>
+                    <span class="invalid-feedback">Dato requerido</span>
+                </div>
+                <div class="input-group mb-2">
+                    <span class="input-group-text" style="min-width:125px;">Comentarios</span>
+                    <textarea class="form-control" id="comments" name="comments" maxlength="128" 
+                    #comments="ngModel" rows="5"
+                    [ngClass]="{ 'is-invalid': comments.invalid && comments.touched , 'is-valid': comments.valid }"
+                    [(ngModel)]="solicitud.comments" placeholder="Ingrese comentarios" maxlength="128" required></textarea>
+                    <span class="invalid-feedback">Dato requerido</span>
+                </div>
+                <button class="btn btn-lg btn-primary" type="submit" [disabled]="!sVacacionesForm.form.valid || !empleadoOK">Solicitar vacaciones</button>
+            </form>
+        </div>
+    </div>
+</div>

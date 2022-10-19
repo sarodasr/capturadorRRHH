@@ -1,0 +1,32 @@
+<div class="col d-flex justify-content-center">
+    <div class="card" style="min-width: 50%; max-width: 85%; margin-top: 25px;">
+        <div class="card-header bg-warning">Solicitud para reinicio de clave</div>
+        <div class="card-body">
+            <form #resetForm="ngForm" autocomplete="off" novalidate (ngSubmit)="resetPassword(resetForm);">
+                <div class="input-group mb-2">
+                    <span class="input-group-text">Clave temporal</span>
+                    <input type="text" class="form-control" id="OTP" name="OTP"
+                    [(ngModel)]="solicitud.OTP" #sOTP="ngModel"
+                    required>
+                    <div class="invalid-feedback">Dato inválido</div>
+                </div>
+                <div class="input-group mb-2">
+                    <span class="input-group-text">Nueva clave</span>
+                    <input type="password" id="new_password_1" name="new_password_1"
+                    [(ngModel)]="solicitud.new_password_1" #sPwd1="ngModel"
+                    required minlength="6" maxlength="25" class="form-control">
+                    <span class="invalid-feedback">Dato inválido</span>
+                </div>
+                <div class="input-group mb-2">
+                    <span class="input-group-text">Nueva clave</span>
+                    <input type="password" id="new_password_2" name="new_password_2"
+                    [(ngModel)]="solicitud.new_password_2" #sPwd2="ngModel"
+                    required minlength="6" maxlength="25" class="form-control">
+                    <span class="invalid-feedback">Dato inválido</span>
+                </div>
+                <button type="submit" class="btn btn-lg btn-primary">Reiniciar clave</button>
+            </form>
+        </div>
+        <div class="card-footer">Por favor revise que los datos sean correctos</div>    
+    </div>
+</div>

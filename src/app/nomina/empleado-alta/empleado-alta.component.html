@@ -1,0 +1,678 @@
+<div class="col d-flex justify-content-center">
+    <div class="card" style="min-width: 85%; max-width: 95%; margin-top: 25px;">
+        <div class="card-header bg-info" style="color: #fff;">Ficha de ingreso y actualización de datos del personal</div>
+        <div class="card-body">
+            <form #sEmpleadoForm="ngForm" autocomplete="off" novalidate (submit)="onSubmit(sEmpleadoForm);">
+                <div class="card mb-2">
+                    <div class="card-header bg-primary" style="color: #fff;">Identificador de personal</div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-floating">
+                                    <select name="companyID" id="companyID" class="form-select" [(ngModel)]="empleado.companyID" autofocus
+                                    #companyID="ngModel" [ngClass]="{ 'is-invalid': companyID.invalid && companyID.touched , 'is-valid': companyID.valid }"
+                                    aria-placeholder="empresa" required>
+                                    <option *ngFor="let companie of companies" [value]="companie.companyID"
+                                    [selected]="companie.companyID == empleado.companyID">
+                                        {{ companie.companyName }}
+                                    </option>
+                                    </select>
+                                    <label for="companyID">Seleccione la empresa</label>
+                                    <span class="invalid-feedback">Dato requerido</span>                
+                                </div> 
+                            </div>
+                            <div class="col">
+                                <div class="form-floating">
+                                    <input type="text" id="employeeCode" name="employeeCode" [(ngModel)]="empleado.employeeCode" 
+                                    #employeeCode="ngModel" [ngClass]="{ 'is-invalid': employeeCode.invalid && employeeCode.touched , 'is-valid': employeeCode.valid }"
+                                    class="form-control" placeholder="Código de empleado" required >
+                                    <label for="employeeCode">Código de empleado</label>
+                                    <span class="invalid-feedback" *ngIf="employeeCode?.invalid && (employeeCode?.dirty || employeeCode?.touched)">Dato requerido</span>                
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mb-2">
+                    <div class="card-header bg-secondary" style="color: #fff;">Datos del puesto</div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-floating mb-2">
+                                    <input type="text" class="form-control" id="employeeJOBTi" name="employeeJOBTi"
+                                    [(ngModel)]="empleado.employeeJOBTi" required #employeeJOBTi="ngModel" placeholder="Ingrese el puesto"
+                                    [ngClass]="{ 'is-invalid': employeeJOBTi.invalid && employeeJOBTi.touched , 'is-valid': employeeJOBTi.valid }">
+                                    <label for="employeeBT">Puesto de trabajo</label>
+                                    <span class="invalid-feedback">Dato requerido</span>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-floating mb-2">
+                                    <input type="number" step="250" class="form-control" id="employeeJOBSB" name="employeeJOBSB"
+                                    min="500" max="100000" placeholder="Ingrese el salario"
+                                    [(ngModel)]="empleado.employeeJOBSB" #employeeJOBSB="ngModel"
+                                    [ngClass]="{ 'is-invalid': employeeJOBSB.invalid && employeeJOBSB.touched, 'is-valid': employeeJOBSB.valid }"
+                                    inputmode="numeric" required style="text-align: right;">
+                                    <label for="employeeJOBSB">Salario base</label>
+                                    <span class="invalid-feedback">Dato requerido</span>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-floating mb-2">
+                                    <input type="number" class="form-control" id="employeeJOBVT" name="employeeJOBVT"
+                                    min="0" max="5000" placeholder="Viáticos (si hay)"
+                                    [(ngModel)]="empleado.employeeJOBVT" #employeeJOBVT="ngModel"
+                                    [ngClass]="{ 'is-invalid': employeeJOBVT.invalid && employeeJOBVT.touched, 'is-valid': employeeJOBVT.valid }"
+                                    inputmode="numeric" required style="text-align: right;">    
+                                    <label for="employeeJOBVT">Viáticos</label>
+                                    <span class="invalid-feedback">Dato requerido</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-floating mb-2">
+                                    <input type="date" class="form-control" id="employeeJOBDS" name="employeeJOBDS"
+                                    [(ngModel)]="empleado.employeeJOBDS" #employeeJOBDS="ngModel"
+                                    [ngClass]="{ 'is-invalid': employeeJOBDS.invalid && employeeJOBDS.touched, 'is-valid': employeeJOBDS.valid }"
+                                    required>
+                                    <label for="employeeJOBDS">Fecha de ingreso</label>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-floating mb-2">
+                                    <input type="number" class="form-control" id="employeeJOBBB" name="employeeJOBBB"
+                                    min="0" max="5000"
+                                    [(ngModel)]="empleado.employeeJOBBB" #employeeJOBBB="ngModel"
+                                    [ngClass]="{ 'is-invalid': employeeJOBBB.invalid && employeeJOBBB.touched, 'is-valid': employeeJOBBB.valid }"
+                                    required style="text-align: right;">
+                                    <label for="employeeJOBBB">Bonificación de ley</label>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-floating mb-2">
+                                    <input type="text" class="form-control-plaintext" readonly id="employeeJOBTS" name="employeeJOBTS"
+                                    readonly style="text-align: right;" value="{{ empleado.employeeJOBSB + empleado.employeeJOBVT + empleado.employeeJOBBB  | currency:'GTQ':'symbol-narrow' }}">
+                                    <label for="employeeJOBTS">Total</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-floating mb-2">
+                                    <select name="employeeJOBJJY" id="employeeJOBJJY" name="employeeJOBJJY"
+                                        class="form-select is-valid"
+                                        [(ngModel)]="empleado.employeeJOBJJY">
+                                        <option value="LUN-VIE">Lunes a Viernes</option>
+                                        <option value="LUN-SAB">Lunes a sábado</option>
+                                    </select>
+                                    <label for="employeeJOBJY">Jornada</label>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-floating mb-2">
+                                    <input type="time" name="emplyeeJOBHS" id="employeeJOBHS" 
+                                    [(ngModel)]="empleado.employeeJOBHS" #employeeJOBHS="ngModel"
+                                    [ngClass]="{ 'is-invalid': employeeJOBHS.invalid && employeeJOBHS.touched , 'is-valid': employeeJOBHS.valid}"
+                                    step="1800" class="form-control"list="horariodetrabajoi" required>
+                                    <label for="employeeJOBHS">Hora inicio</label>
+                                    <span class="invalid-feedback">Dato requerido</span>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-floating mb-2">
+                                    <input type="time" name="employeeJOBHT" id="employeeJOBHT"
+                                    [(ngModel)]="empleado.employeeJOBHT" #employeeJOBHT="ngModel"
+                                    [ngClass]="{ 'is-invalid': employeeJOBHT.invalid && employeeJOBHT.touched, 'is-valid': employeeJOBHT.valid }"
+                                    step="1800" class="form-control" list="horariodetrabajof" required>  
+                                    <label for="employeeJOBHT">Hora fin</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-floating mb-2">
+                                    <select name="employeeJOBSJY" id="employeeJOBSJY" class="form-select is-valid"
+                                    [(ngModel)]="empleado.employeeJOBSJY" #employeeJOBSJY="ngModel"
+                                    required>
+                                        <option value="**">N/A</option>
+                                        <option value="SAB">Sábado</option>
+                                    </select>
+                                    <label for="employeeJOBSJY">Jornada sabatina</label>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-floating mb-2">
+                                    <input type="time" name="emplyoeeJOBSHS" id="employeeJOBSHS" 
+                                    step="1800" class="form-control is-valid" value="08:00" list="horariodetrabajoi"
+                                    [(ngModel)]="empleado.employeeJOBSHS" #employeeJOBSHS="ngModel"
+                                    [readonly]="employeeJOBSJY.value == '**'"
+                                    [ngClass]="{ 'is-invalid': employeeJOBSHS.invalid && employeeJOBSHS.touched, 'is-valid': employeeJOBSHS.valid }"
+                                    [required]="employeeJOBSJY.value != '**'">
+                                    <label for="employeeJOBSHS">Horario inicio</label>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-floating mb-2">
+                                    <input type="time" name="employeeJOBSHT" id="employeeJOBSHT"
+                                    [(ngModel)]="empleado.employeeJOBSHT" #employeeJOBSHT="ngModel"
+                                    [ngClass]="{ 'is-invalid': employeeJOBSHT.invalid && employeeJOBSHT.touched, 'is-valid': employeeJOBSHT.valid }"
+                                    [readonly]="employeeJOBSJY.value == '**'"
+                                    step="1800" class="form-control" list="horariodetrabajof">  
+                                    <label for="employeeJOBSHT">Hora fin</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mb-2">
+                    <div class="card-header bg-secondary" style="color: #fff;">Datos personales</div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-floating mb-2">
+                                    <input class="form-control" type="text" id="employeeLastName" name="employeeLastName"
+                                    [(ngModel)]="empleado.employeeLastName" #employeeLastName="ngModel"
+                                    [ngClass]="{ 'is-invalid': employeeLastName.invalid && employeeLastName.touched, 'is-valid': employeeLastName.valid }"
+                                    required placeholder="Apellido paterno">    
+                                    <label for="employeeLastName" class="col-sm-2 col-form-label">Apellido paterno</label>
+                                    <span class="invalid-feedback">Dato requerido</span>
+                                </div>        
+                            </div>
+                            <div class="col">
+                                <div class="form-floating mb-2">
+                                    <input class="form-control" type="text" id="employeeLastName2" name="employeeLastName2"
+                                    [(ngModel)]="empleado.employeeLastName2" #employeeLastName2="ngModel"
+                                    [ngClass]="{ 'is-invalid': employeeLastName2.invalid && employeeLastName2.touched, 'is-valid': employeeLastName2.valid }"
+                                    required placeholder="Apellido materno">
+                                    <label for="employeeLastName2">Apellido materno</label>
+                                    <span class="invalid-feedback">Dato requerido</span>
+                                </div>        
+                            </div>
+                        </div>
+                        <div class="form-floating mb-2">
+                            <input type="text" class="form-control" id="employeeName" name="employeeName"
+                            [(ngModel)]="empleado.employeeName" #employeeName="ngModel"
+                            [ngClass]="{ 'is-invalid': employeeName.invalid && employeeName.touched, 'is-valid': employeeName.valid }"
+                            required placeholder="Nombres">
+                            <label for="employeeName">Nombres</label>
+                            <span class="invalid-feedback">Dato requerido</span>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-floating mb-2">
+                                    <input type="date" class="form-control" id="employeeDOB" name="employeeDOB"
+                                    [(ngModel)]="empleado.employeeDOB" #employeeDOB="ngModel"
+                                    [ngClass]="{ 'is-invalid': employeeDOB.invalid && employeeDOB.touched, 'is-valid': employeeDOB.valid }"
+                                    required>
+                                    <label for="employeeDOB">Fecha de nacimiento</label>
+                                    <span class="invalid-feedback">Dato requerido</span>
+                                </div>        
+                            </div>
+                            <div class="col">
+                                <div class="form-floating mb-2">
+                                    <select name="employeeBT" id="employeeBT" class="form-select"
+                                    [(ngModel)]="empleado.employeeBT" #employeeBT="ngModel"
+                                    [ngClass]="{ 'is-invalid': employeeBT.invalid && employeeBT.touched, 'is-valid': employeeBT.valid }"
+                                    required aria-label="Fecha de nacimiento" aria-placeholder="Tipo de sangre">
+                                        <option value="A+">A+</option>
+                                        <option value="A-">A-</option>
+                                        <option value="B+">B-</option>
+                                        <option value="B-">B-</option>
+                                        <option value="AB+">AB+</option>
+                                        <option value="AB-">AB-</option>
+                                        <option value="O+">O+</option>
+                                        <option value="O-">O-</option>
+                                    </select>
+                                    <label for="employeeBT">Tipo de Sangre</label>
+                                    <div class="invalid-feedback">Dato requerido</div>
+                                </div>                               
+                            </div>
+                            <div class="col">
+                                <div class="form-floating mb-2">
+                                    <select name="employeeGender" id="employeeGender" class="form-select is-valid" aria-label="seleccione el sexo"
+                                    [(ngModel)]="empleado.employeeGender">
+                                        <option value="M">Masculino</option>
+                                        <option value="F">Femenino</option>
+                                    </select>
+                                    <label for="employeeGender">Sexo</label>
+                                </div>                                
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-floating mb-2">
+                                    <input type="text" class="form-control" id="employeeLanguage" name="employeeLanguage"
+                                    [(ngModel)]="empleado.employeeLanguage" #employeeLanguage="ngModel"
+                                    [ngClass]="{ 'is-invalid': employeeLanguage.invalid && employeeLanguage.touched, 'is-valid': employeeLanguage.valid }"
+                                    required maxlength="50" list="idiomaNativo" placeholder="Idioma nativo">
+                                    <label for="employeeLanguage">Idioma</label>
+                                    <span class="invalid-feedback">Dato requerido</span>
+                                </div>                                
+                            </div>
+                            <div class="col">
+                                <div class="form-floating mb-2">
+                                    <select name="employeeLocalLanguage" id="employeeLocalLanguage" class="form-select is-valid"
+                                    [(ngModel)]="empleado.employeeLocalLanguage" #employeeLocalLanguage="ngModel">
+                                        <option value="**">Ninguno</option>
+                                        <option value="1. Achi">1. Achi</option>
+                                        <option value="2. Akateko">2. Akateko</option>
+                                        <option value="3. Awakateko">3. Awakateko</option>
+                                        <option value="4. Chorti">4. Chorti</option>
+                                        <option value="5. Chuj">5. Chuj</option>
+                                        <option value="6. Itzá">6. Itzá</option>
+                                        <option value="7. Ixil">7. Ixil</option>
+                                        <option value="8. Jakalteco">8. Jakalteco</option>
+                                        <option value="9. Kaqchikel">9. Kaqchikel</option>
+                                        <option value="10. Kiche">10. Kiche</option>
+                                        <option value="11. Mam">11. Mam</option>
+                                        <option value="12. Mopan">12. Mopan</option>
+                                        <option value="13. Poqoman">13. Poqoman</option>
+                                        <option value="14. Poqomchi">14. Poqomchi</option>
+                                        <option value="15. Qanjobal">15. Qanjobal</option>
+                                        <option value="16. Qeqchi">16. Qeqchi</option>
+                                        <option value="17. Sakapulteko">17. Sakapulteko</option>
+                                        <option value="18. Sipakapense">18. Sipakapense</option>
+                                        <option value="19. Tektiteco">19. Tektiteco</option>
+                                        <option value="20. Tzutujil ">20. Tzutujil </option>
+                                        <option value="21. Uspanteko">21. Uspanteko</option>
+                                        <option value="22. Garifuna">22. Garifuna</option>
+                                        <option value="23. Español">23. Español</option>                                        
+                                    </select>
+                                    <label for="employeeLocalLanguage">Idioma maya</label>
+                                </div>                                
+                            </div>
+                            <div class="col">
+                                <div class="form-floating mb-2">                                    
+                                    <select name="employeeCollegeDegree" id="employeeCollegeDegree" class="form-select is-valid"
+                                    [(ngModel)]="empleado.employeeCollegeDegree">
+                                        <option value="Primaria Incompleta">Primaria Incompleta</option>
+                                        <option value="Primaria">Primaria</option>
+                                        <option value="Básicos">Básicos</option>
+                                        <option value="Nivel Medio">Nivel Medio</option>
+                                        <option value="Universitario Incompleto">Universitario Incompleto</option>
+                                        <option value="Universitario Completo">Universitario Completo</option>
+                                        <option value="Maestria">Maestria</option>                                        
+                                    </select>
+                                    <label for="employeeCollegeDegree">Nivel académico</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-floating mb-2">
+                                    <input type="text" class="form-control is-valid" name="employeeFN" id="employeeFN"
+                                    [(ngModel)]="empleado.employeeFN" maxlength="75" placeholder="Nombre del padre">
+                                    <label for="employeeFN">Nombre del padre</label>
+                                    <span class="invalid-feedback">Ha excedido el tamaño máximo</span>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-floating mb-2">
+                                    <input type="text" class="form-control is-valid" name="employeeMN" id="employeeMN"
+                                    [(ngModel)]="empleado.employeeMN" maxlength="75" placeholder="Nombre de la madre">
+                                    <label for="employeeMN">Nombre de la madre</label>
+                                    <span class="invalid-feedback">Ha excedido el tamaño máximo</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-floating mb-2">
+                                    <input type="number" class="form-control" id="employeeSN" name="employeeSN"
+                                    [(ngModel)]="empleado.employeeSN" #employeeSN="ngModel"
+                                    [ngClass]="{ 'is-invalid': employeeSN.invalid && employeeSN.touched, 'is-valid': employeeSN.valid }"
+                                    required min="0" max="25" placeholder="IGSS">
+                                    <label for="employeeSN">Cantidad de hijos</label>
+                                    <span class="invalid-feedback">Dato requerido. Si no tiene, coloque cero (0)</span>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-check mb-2">
+                                    <input type="checkbox" class="form-check-input" id="employeeUG" name="employeeUG"
+                                    [(ngModel)]="empleado.employeeUG">
+                                    <label for="employeeUG">Usa lentes</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-floating mb-2">
+                                    <select name="employeeBAC01" id="employeeBAC01" class="form-select"
+                                    [(ngModel)]="employeeBAC01" #employeeBACACCT01="ngModel">
+                                        <option value="N/A">N/A</option>
+                                        <option value="Ahorros">Ahorros</option>
+                                        <option value="Monetarios">Monetarios</option>
+                                    </select>
+                                    <label for="employeeBAC01">Tipo de cuenta</label>    
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-floating mb-2">
+                                    <input type="text" class="form-control" id="employeeBAC02" name="employeeBAC02" (blur)="BACChange()"
+                                    [(ngModel)]="employeeBAC02" #employeeBACACCT02="ngModel"
+                                    [ngClass]="{ 'is-invalid': employeeBACACCT02.invalid && employeeBACACCT02.touched, 'is-valid': employeeBACACCT02.valid }"
+                                    [required]="employeeBACACCT01.value != 'N/A'" placeholder="ACCT">
+                                    <label for="employeeBAC02">Número de cuenta</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-floating mb-2">
+                                    <select name="employeeTID" id="employeeTID" class="form-select is-valid"
+                                    [(ngModel)]="empleado.employeeIDT" #employeeIDT="ngModel"
+                                    required>
+                                        <option value="DPI">DPI</option>
+                                        <option value="PAS">Pasaporte</option>
+                                        <option value="OTR">Otro</option>
+                                    </select>
+                                    <label for="employeeTID">Tipo de documento</label>
+                                    <span class="invalid-feedback">Tipo de documento</span>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-floating mb-2">
+                                    <input type="text" id="employeeIDNo" name="employeeIDNo" class="form-control"
+                                    [(ngModel)]="empleado.employeeIDNo" #employeeIDNo="ngModel"
+                                    [ngClass]="{ 'is-invalid': employeeIDNo.invalid && employeeIDNo.touched, 'is-valid': employeeIDNo.valid }"
+                                    required placeholder="NO">
+                                    <label for="employeeIDNo">Número de documento</label>
+                                    <span class="invalid-feedback">Dato requerido</span>
+                                </div>
+                            </div>                            
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-floating mb-2">
+                                    <input type="text" class="form-control is-valid" id="employeeSSN" name="employeeSSN"
+                                    [(ngModel)]="empleado.employeeSSN" placeholder="SSN">
+                                    <label for="employeeSSN">Afiliación IGSS</label>
+                                    <span class="invalid-feedback">Dato requerido</span>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-floating mb-2">
+                                    <input type="text" class="form-control" id="employeeNIT" name="employeeNIT"
+                                    [(ngModel)]="empleado.employeeNIT" #employeeNIT="ngModel"
+                                    [ngClass]="{ 'is-invalid': employeeNIT.invalid && employeeNIT.touched, 'is-valid': employeeNIT.valid }"
+                                    required maxlength="20" placeholder="NIT">
+                                    <label for="employeeNIT">NIT</label>
+                                    <span class="invalid-feedback">Dato requerido</span>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-floating mb-2">
+                                    <select name="employeePRO" id="employeeForm" class="form-select is-valid">
+                                        <option value="Bachiller en CCLL">Bachiller en CCLL</option>
+                                    </select>
+                                    <label for="employeePRO">Profesión</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-floating mb-2">
+                                    <select name="employeeCT" id="employeeCT" class="form-select is-valid"
+                                    [(ngModel)]="empleado.employeeCT" #employeeCT="ngModel"
+                                    required aria-placeholder="seleccione el país">
+                                        <option *ngFor="let item of paises.items"
+                                        [value]="item.value"
+                                        [selected]="empleado.employeeCT == item.value">
+                                            {{ item. description }}
+                                        </option>
+                                    </select>
+                                    <label for="employeeCT">País (origen)</label>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-floating mb-2">
+                                    <select name="employeeCY" id="employeeCY"
+                                    class="form-select is-valid"
+                                    (change)="this.getMunicipios(empleado.employeeCY)"
+                                    [(ngModel)]="empleado.employeeCY">
+                                        <option *ngFor="let item of departamentos.items" 
+                                            [value]="item.value" [selected]="item.value == empleado.employeeCY">
+                                            {{ ("0" + item.value).substr(-2) + ". " + item.description }}
+                                        </option>
+                                    </select>
+                                    <label for="employeeCY">Departamento</label>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-floating mb-2">
+                                    <select name="employeeTW" id="employeeTW"
+                                    class="form-select is-valid"
+                                    [(ngModel)]="empleado.employeeTW">
+                                        <option *ngFor="let item of municipios.items"
+                                        [value]="item.value">
+                                            {{ item.description }}
+                                        </option>
+                                    </select>
+                                    <label for="employeeTW">Municipio</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-floating mb-2">
+                                    <select name="employeeET" id="employeeET"
+                                    class="form-select is-valid" aria-placeholder="Etnia"
+                                    [(ngModel)]="empleado.employeeET">
+                                        <option value="LADINO">Ladino-mestizo</option>
+                                        <option value="MAYA">Maya</option>
+                                        <option value="XINCA">Xinca</option>
+                                        <option value="GARIFUNA">Garifuna</option>
+                                        <option value="EXTRANJERO">Extranjero</option>
+                                    </select>
+                                    <label for="employeeET">Etnia</label>    
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-floating mb-2">
+                                    <select name="employeeMS" id="employeeMS"
+                                    class="form-select is-valid" aria-placeholder="Estado civil"
+                                    [(ngModel)]="empleado.employeeMS">
+                                        <option value="SOLTERO">Soltero</option>
+                                        <option value="CASADO">Casado</option>
+                                        <option value="VIUDO">Viudo</option>
+                                        <option value="UNIDO">Unido</option>
+                                        <option value="SEPARDO">Separado</option>
+                                    </select>
+                                    <label for="employeeMS"></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-floating mb-2">
+                                    <textarea name="employeeADDR" id="employeeADDR" cols="30" rows="10" placeholder="Dirección"
+                                    [ngClass]="{ 'is-invalid': employeeADDR.invalid && employeeADDR.touched, 'is-valid': employeeADDR.valid }"
+                                    [(ngModel)]="empleado.employeeADDR" #employeeADDR="ngModel" required class="form-control"
+                                    maxlength="128"></textarea>
+                                    <label for="employeeADDR">Dirección de domicilio</label>
+                                </div>    
+                            </div>
+                            <div class="col">
+                                <div class="form-floating mb-2">
+                                    <select name="employeeHS" id="employeeHS" class="form-select is-valid"
+                                    [(ngModel)]="empleado.employeeHS" aria-placeholder="Tipo de vivienda">
+                                        <option value="PROPIA">Propia</option>
+                                        <option value="ALQUILADA">Alquilada</option>
+                                    </select>
+                                    <label for="employeeHS">Tipo de vivienda</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row g-3">
+                            <div class="col" >
+                                <div class="form-floating mb-2">
+                                    <input type="text" class="form-control" id="employeeHT" name="employeeHT"
+                                    [(ngModel)]="empleado.employeeHT" #employeeHT="ngModel" placeholder="Teléfono de casa"
+                                    [ngClass]="{ 'is-invalid': employeeHT.invalid && employeeHT.touched, 'is-valid': employeeHT.valid }"
+                                    required inputmode="numeric" pattern="^\d{8}$">
+                                    <label for="employeeHT">Teléfono de casa</label>
+                                    <span class="invalid-feedback">Dato requerido o mal ingresado</span>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-floating mb-2">
+                                    <input type="text" class="form-control" id="employeeCP" name="employeeCP"
+                                    [(ngModel)]="empleado.employeeCP" #employeeCP="ngModel" placeholder="Teléfono celular"
+                                    [ngClass]="{ 'is-invalid': employeeCP.invalid && employeeCP.touched, 'is-valid': employeeCP.valid }"
+                                    required inputmode="numeric" pattern="^\d{8}$">
+                                    <label for="employeeHT">Teléfono celular</label>
+                                    <span class="invalid-feedback">Dato requerido o mal ingresado</span>    
+                                </div>
+                            </div>
+                            <div class="col-7">
+                                <div class="form-floating mb-2">
+                                    <input type="email" class="form-control" id="employeeEM" name="employeeEM"
+                                    [(ngModel)]="empleado.employeeEM" #employeeEM="ngModel" placeholder="Correo personal"
+                                    [ngClass]="{ 'is-invalid': employeeEM.invalid && employeeEM.touched, 'is-valid': employeeEM.valid }"
+                                    required pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$">
+                                    <label for="employeeEM">Correo personal</label> 
+                                    <span class="invalid-feedback">Este dato es inválido o está vacío</span> 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mb-2">
+                    <div class="card-header bg-secondary" style="color: #fff;">Datos adicionales</div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-floating mb-2">
+                                    <select name="employeeDATE" id="employeeDATE" class="form-select is-valid"
+                                    [(ngModel)]="empleado.employeeDATE" aria-placeholder="trabajo en el extranjero">
+                                        <option value="0">No</option>
+                                        <option value="1">Si</option>
+                                    </select>
+                                    <label for="employeeDATE">Ha trabajado en el extranjero</label>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-floating mb-2">
+                                    <select name="employeeMX" id="employeeMX" class="form-select is-valid"
+                                    [(ngModel)]="empleado.employeeDAMX">
+                                    <option value="">N/A</option>
+                                        <option value="FORMAL">Formal</option>
+                                        <option value="INFORMAL">Informal</option>
+                                    </select>
+                                    <label for="employeeMX">En qué forma</label>    
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-floating mb-2">
+                                    <select name="employeeDACT" id="employeeDACT" class="form-select is-valid"
+                                    [(ngModel)]="empleado.employeeDACT" aria-placeholder="pais">
+                                    <option value="">N/A</option>
+                                    </select>
+                                    <label for="employeeDACT">País en el que trabajó</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-floating mb-2">
+                                    <input type="text" class="form-control is-valid" id="employeeDANOP" name="employeeDANOP"
+                                    [(ngModel)]="empleado.employeeDANOP" placeholder="Número de permiso" maxlength="50">
+                                    <label for="employeeDANOP">Número de permiso de trabajo</label>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-floating mb-2">
+                                    <input type="text" class="form-control is-valid" id="employeeDAMSG" name="employeeDAMSG"
+                                    [(ngModel)]="empleado.employeeDAMSG" placeholder="Motivo de retiro" maxlength="50">
+                                    <label for="employeeDAMSG">Motivo de finalización</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mb-2">
+                    <div class="card-header bg-secondary" style="color: #fff;">Contactos de emergencia</div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-5">
+                                <div class="form-floating mb-2">
+                                    <input type="text" class="form-control" id="employeeSOSName" name="employeeSOSName"
+                                    [(ngModel)]="empleado.employeeSOSName" #employeeSOSName="ngModel"
+                                    [ngClass]="{ 'is-invalid': employeeSOSName.invalid && employeeSOSName.touched, 'is-valid': employeeSOSName.valid }"
+                                    required placeholder="Contacto emergncia" maxlength="50">
+                                    <label for="employeeSOSName">Nombre de contacto</label>
+                                    <span class="invalid-feedback">Dato requerido</span>
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="form-floating mb-2">
+                                    <input class="form-control" type="text" maxlength="8" minlength="8" id="employeeSOSPhone" name="employeeSOSPhone"
+                                    [(ngModel)]="empleado.employeeSOSPhone" #employeeSOSPhone="ngModel"
+                                    [ngClass]="{ 'is-invalid': employeeSOSPhone.invalid && employeeSOSPhone.touched, 'is-valid': employeeSOSPhone.valid }"
+                                    required placeholder="telefono contacto" pattern="^\d{8}$" inputmode="numeric">
+                                    <label for="employeeSOSPhone">Teléfono de contacto</label>
+                                    <span class="invalid-feedback">Dato requerido</span>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-floating mb-2">
+                                    <select name="employeeSOSWho" id="employeeSOSWho" class="form-select"
+                                    [(ngModel)]="empleado.employeeSOSWho" #employeeSOSWho="ngModel"
+                                    [ngClass]="{ 'is-invalid': employeeSOSWho.invalid && employeeSOSWho.touched, 'is-valid': employeeSOSWho.valid }"
+                                    required aria-placeholder="parentesco">
+                                        <option value="PADRE">Padre</option>
+                                        <option value="MADRE">Madre</option>
+                                        <option value="HIJO">Hijo</option>
+                                        <option value="HERMANO">Hermano</option>
+                                        <option value="SUEGRO">Suegro</option>
+                                        <option value="CONYUGE">Conyuge</option>
+                                    </select>
+                                    <label for="employeeSOSWho">Parentesco</label>    
+                                    <span class="invalid-feedback">Dato requerido</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-floating mb-2">
+                                    <input type="text" class="form-control is-valid" id="employeeSOSHospital" name="employeeSOSHospital"
+                                    [(ngModel)]="empleado.employeeSOSHospital"
+                                    maxlength="50" placeholder="hospital">
+                                    <label for="employeeSOSHospital">Hospital en caso de emergencia</label>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-floating mb-2">
+                                    <input type="text" class="form-control is-valid" id="employeeSOSMD" name="employeeSOSMD"
+                                    [(ngModel)]="empleado.employeeSOSPMD" placeholder="cabecera"
+                                    maxlength="50">
+                                    <label for="employeeSOSMD">Médico de cabecera</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-lg btn-primary">Grabar datos</button>
+            </form>
+            <datalist id="horariodetrabajoi">
+                <option value="06:00"></option>
+                <option value="07:00"></option>
+                <option value="08:00"></option>
+                <option value="09:00"></option>
+                <option value="10:00"></option>
+            </datalist>
+            <datalist id="horariodetrabajof">
+                <option value="15:00"></option>
+                <option value="16:00"></option>
+                <option value="17:00"></option>
+                <option value="18:00"></option>
+                <option value="19:00"></option>
+            </datalist>
+        </div>
+        <datalist id="idiomaNativo">
+            <option value="Español">Español</option>
+            <option value="Inglés">Inglés</option>
+        </datalist>
+    </div>
+</div>
