@@ -1,1 +1,14 @@
 /* You can add global styles to this file, and also import other style files */
+body{
+    background-color: #f0f0f0;
+    background-image: url('assets/img/LogoTE2_.png');
+    background-position: bottom right;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+.input-error {
+    border-right: solid 5px red !important;
+  }
+  .input-success {
+    border-right: solid 5px green !important;
+  }
